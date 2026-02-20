@@ -1,124 +1,251 @@
-\# Retail Sales Data Lake – PySpark (Bronze-Silver-Gold Architecture)
+# Retail Sales Data Lake – PySpark (Bronze–Silver–Gold Architecture)
 
+## 📌 Project Overview
 
+This project implements an end-to-end **Data Lake architecture** using PySpark following the industry-standard **Bronze–Silver–Gold layered design pattern**.
 
-\## Project Overview
+The pipeline ingests raw retail sales data, performs data cleansing and transformation, and generates business-ready aggregated datasets for analytics.
 
-This project implements a multi-layered Data Lake architecture using PySpark.  
+This project simulates an enterprise-grade ETL workflow similar to modern cloud data platforms such as **Azure Databricks**, **Delta Lake**, or large-scale distributed Spark environments.
 
-It processes retail sales data using a structured ETL approach following Bronze, Silver, and Gold layers.
+---
 
+## 📊 Dataset Used
 
+**Dataset:** Superstore Retail Sales Dataset  
+**Source:** Kaggle – Superstore Sales Data  
+**Records Processed:** 9,800+  
 
-\## Architecture
+### Dataset Includes:
+- Order ID
+- Order Date
+- Ship Date
+- Customer Details
+- Region & State
+- Product Category & Sub-Category
+- Sales Amount
 
+This dataset represents transactional retail sales data and is suitable for demonstrating real-world ETL transformations and aggregation workflows.
 
+---
 
-Raw CSV
+## 🏗 Architecture
 
-&nbsp;  ↓
-
+```
+Raw CSV Data
+      ↓
 Bronze Layer (Raw Ingestion)
-
-&nbsp;  ↓
-
-Silver Layer (Data Cleaning \& Standardization)
-
-&nbsp;  ↓
-
+      ↓
+Silver Layer (Data Cleaning & Standardization)
+      ↓
 Gold Layer (Business Aggregations)
+```
 
+This layered design mirrors enterprise data lake implementations used in modern cloud data platforms.
 
+---
 
-\## Layers Explained
+## 🥉 Bronze Layer – Raw Ingestion
 
+**Purpose:** Preserve raw data as the source of truth.
 
+### Responsibilities:
+- Ingest raw CSV file
+- Apply schema inference
+- Store structured raw dataset
+- Maintain immutability
 
-\### Bronze Layer
+### Key Concepts:
+- Raw zone storage
+- Auditability
+- Schema inference
+- Distributed ingestion using Spark
 
-\- Raw data ingestion
+---
 
-\- Schema inference
+## 🥈 Silver Layer – Data Cleansing & Standardization
 
-\- Immutable storage
+**Purpose:** Transform raw data into clean, structured format.
 
-\- Source of truth
+### Transformations Applied:
 
+- Deduplication of records
+- Safe numeric casting for `sales` column
+- Handling malformed numeric values
+- Date conversion (Order Date & Ship Date)
+- Null value handling
+- Column name standardization
+- Defensive casting using `try_cast`
+- Schema enforcement
 
+### Real-World Issues Resolved:
 
-\### Silver Layer
+- CSV parsing inconsistencies
+- Commas within quoted strings
+- Malformed numeric values (e.g., '.', 'Blank', empty strings)
+- Schema misalignment issues
+- Safe numeric conversion in distributed processing
 
-\- Deduplication
+This layer ensures clean, analytics-ready structured data.
 
-\- Safe numeric casting
+---
 
-\- Date conversion
+## 🥇 Gold Layer – Business Aggregations
 
-\- Null handling
+**Purpose:** Produce analytics-ready datasets for reporting and BI consumption.
 
-\- Column standardization
+### Aggregations Created:
 
+1. Revenue by Region  
+2. Revenue by Product Category  
+3. Monthly Sales Trend (Year + Month)
 
+These outputs simulate datasets typically consumed by:
+- BI dashboards
+- Reporting tools
+- Data analysts
+- Executive stakeholders
 
-\### Gold Layer
+---
 
-\- Revenue by region
+## 🛠 Technologies Used
 
-\- Revenue by category
+- Python
+- PySpark
+- Distributed Data Processing
+- ETL Design Principles
+- Layered Data Lake Architecture
 
-\- Monthly sales trends
+---
 
-\- Business-ready datasets
+## 📂 Project Structure
 
+```
+retail-data-lake/
+│
+├── data/
+│   ├── raw/
+│   ├── bronze/
+│   ├── silver/
+│   └── gold/
+│
+├── scripts/
+│   ├── bronze_layer.py
+│   ├── silver_layer.py
+│   └── gold_layer.py
+│
+└── README.md
+```
 
+---
 
-\## Technologies Used
+## ▶ How to Execute
 
-\- Python
+### 1️⃣ Install Requirements
 
-\- PySpark
+```bash
+pip install pyspark
+```
 
-\- Distributed Data Processing
+---
 
-\- ETL Design Principles
+### 2️⃣ Download Dataset
 
+Download the **Superstore Sales Dataset** from Kaggle.
 
+Place the CSV file inside:
 
-\## Key Highlights
+```
+data/raw/
+```
 
-\- Processed 9,800+ records
+Rename the file:
 
-\- Resolved CSV parsing inconsistencies
+```
+superstore.csv
+```
 
-\- Implemented defensive casting using try\_cast
+---
 
-\- Designed enterprise-style layered architecture
+### 3️⃣ Run Bronze Layer
 
+```bash
+python scripts/bronze_layer.py
+```
 
+This will:
+- Ingest raw CSV
+- Store structured Bronze dataset
 
-\## How to Run
+---
 
+### 4️⃣ Run Silver Layer
 
+```bash
+python scripts/silver_layer.py
+```
 
-1\. Install PySpark:
+This will:
+- Clean data
+- Handle malformed values
+- Enforce schema
+- Standardize column names
+- Prepare analytics-ready dataset
 
-&nbsp;  pip install pyspark
+---
 
+### 5️⃣ Run Gold Layer
 
+```bash
+python scripts/gold_layer.py
+```
 
-2\. Run Bronze:
+This will generate:
 
-&nbsp;  python scripts/bronze\_layer.py
+```
+data/gold/
+   region_revenue.csv
+   category_revenue.csv
+   monthly_sales.csv
+```
 
+---
 
+## 📈 Key Highlights
 
-3\. Run Silver:
+- Processed 9,800+ retail sales records
+- Implemented enterprise-style layered data lake architecture
+- Resolved real-world data quality issues
+- Applied defensive data engineering practices
+- Designed analytics-ready business output layer
+- Simulated distributed ETL workflow using PySpark
 
-&nbsp;  python scripts/silver\_layer.py
+---
 
+## 🎯 Learning Outcomes
 
+- Practical implementation of Data Lake architecture
+- Handling dirty real-world CSV data
+- Safe casting and schema enforcement
+- Building business-ready aggregation layers
+- Understanding enterprise ETL workflows
+- Debugging distributed data processing issues
 
-4\. Run Gold:
+---
 
-&nbsp;  python scripts/gold\_layer.py
+## 🚀 Future Enhancements
 
+- Migration to Azure Databricks
+- Integration with Delta Lake
+- Workflow orchestration using Airflow or Azure Data Factory
+- CI/CD integration
+- Data validation framework
+- Cloud storage integration (ADLS / GCS / S3)
+
+---
+
+## 📌 Author
+
+Saahiti K S  
+Computer Science Engineering  
+Cloud & Data Engineering Enthusiast
